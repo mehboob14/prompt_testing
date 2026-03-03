@@ -7,6 +7,7 @@ from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 
 try:
     from .chat_service import PromptChatService
@@ -20,6 +21,14 @@ except Exception:  # pragma: no cover - allow running as a script inside the app
 
 settings = get_settings()
 app = FastAPI(title=settings.app_title)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 service = PromptChatService(settings)
 
 base_dir = Path(__file__).resolve().parent.parent
@@ -117,4 +126,4 @@ if __name__ == "__main__":
     # Allow running via `python main.py` from inside the app/ directory.
     import uvicorn
     # Use module string so uvicorn manages the process lifecycle reliably.
-    uvicorn.run("main:app", host="127.0.0.1", port=5000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
