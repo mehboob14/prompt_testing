@@ -191,7 +191,7 @@ formEl.addEventListener('submit', async (event) => {
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: 'Request failed' }));
-    appendMessage('meta', `❌ Error: ${error.detail || 'Request failed'}`);
+    appendMessage('meta', ` Error: ${error.detail || 'Request failed'}`);
     return;
   }
 
